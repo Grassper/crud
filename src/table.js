@@ -7,17 +7,17 @@ import "./App.css";
 const TableContainer = () => {
   const [studentData, setStudentData] = useState([]);
   const [show, setShow] = useState(false);
-  const [editStudent, setEditStudent] = useState({});
+  const [editStudent, setEditStudent] = useState(null);
 
   const clearEdit = () => {
-    setEditStudent({});
+    setEditStudent(null);
   };
 
   const toggleShow = () => {
     setShow((prevState) => !prevState);
   };
 
-  const handleSubmit = (name, department, phoneNumber, mailId) => {
+  const handleAdd = (name, department, phoneNumber, mailId) => {
     const data = {
       name,
       department,
@@ -27,8 +27,14 @@ const TableContainer = () => {
     setStudentData((prevState) => [...prevState, data]);
   };
 
-  const handleEdit = (index) => {
+  const handleEdit = (id, name, department, phoneNumber, mailId) => {
+    studentData[id] = { name, department, phoneNumber, mailId };
+    setStudentData(studentData);
+  };
+
+  const toggleEdit = (index) => {
     const student = studentData[index];
+    student.id = index;
     setEditStudent(student);
     toggleShow();
   };
@@ -48,19 +54,6 @@ const TableContainer = () => {
     return;
   };
 
-  // handleEdit = (i) => {
-  //   let data = this.state.studentData[i];
-  //   this.refs.txtName.value = data.name;
-  //   this.refs.txtDept.value = data.department;
-  //   this.refs.txtNum.value = data.phoneNumber;
-  //   this.refs.txtMail.value = data.mailId;
-
-  //   this.setState({
-  //     act: 1,
-  //     index: i,
-  //   });
-  // };
-
   return (
     <div className="col-md-7 offset-md-3 mt-5">
       <div>
@@ -71,7 +64,8 @@ const TableContainer = () => {
           <Popup
             form={show}
             hide={toggleShow}
-            add={handleSubmit}
+            add={handleAdd}
+            edit={handleEdit}
             clearEdit={clearEdit}
             editStudent={editStudent}
           />
@@ -98,7 +92,7 @@ const TableContainer = () => {
                 <button
                   className="btn btn-primary btn-sm"
                   id="editbtn"
-                  onClick={() => handleEdit(i)}
+                  onClick={() => toggleEdit(i)}
                 >
                   Edit
                 </button>
