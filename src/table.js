@@ -1,8 +1,9 @@
+import "./App.css";
+
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import Popup from "./popUp";
 
-import "./App.css";
+import Popup from "./popUp";
 
 const TableContainer = () => {
   const [studentData, setStudentData] = useState([]);
@@ -15,6 +16,13 @@ const TableContainer = () => {
 
   const toggleShow = () => {
     setShow((prevState) => !prevState);
+  };
+
+  const toggleEdit = (index) => {
+    const student = studentData[index];
+    student.id = index;
+    setEditStudent(student);
+    toggleShow();
   };
 
   const handleAdd = (name, department, phoneNumber, mailId) => {
@@ -30,13 +38,6 @@ const TableContainer = () => {
   const handleEdit = (id, name, department, phoneNumber, mailId) => {
     studentData[id] = { name, department, phoneNumber, mailId };
     setStudentData(studentData);
-  };
-
-  const toggleEdit = (index) => {
-    const student = studentData[index];
-    student.id = index;
-    setEditStudent(student);
-    toggleShow();
   };
 
   const handleDelete = (index) => {
