@@ -1,0 +1,43 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.form-height {
+  margin-top: 10px;
+  line-height: 30px;
+  font-weight: bold;
+}
+.addbtn {
+  width: 10%;
+  margin-left: 25px;
+}
+.table-top {
+  text-align: center;
+  background-color: rgb(247, 242, 242);
+}
+#editbtn {
+  padding: 5px 12px 5px 12px;
+  margin: 5px;
+  background-color: #0d6efd;
+}
+#dltbtn {
+  padding: 5px;
+  margin: 5px;
+  margin-left: 10px;
+  background-color: #dc3545;
+}
+.th-color {
+  background-color: silver;
+}
+#add {
+  margin-right: 40px;
+}
+.modalClass {
+  float: right;
+  margin-bottom: 26px;
+}
+#clsbtn {
+  background-color: #dc3545;
+  border: 0px;
+}
