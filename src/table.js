@@ -1,21 +1,15 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import Popup from "./childComponent";
 
 import "./App.css";
 
-class Table extends Component {
-  constructor() {
-    super();
-    this.handleShow = this.handleShow.bind(this);
-    this.handleHide = this.handleHide.bind(this);
-    this.state = {
-      show: false,
-      studentData: [],
-      act: 0,
-      index: "",
-    };
-  }
+const Table = () => {
+  const [studentData, setStudentData] = useState([]);
+  const [index, setIndex] = useState("");
+  const [act, setAct] = useState(0)
+  const [show, setShow] = useState(false)
+
   handleShow() {
     this.setState({ show: true });
   }
@@ -126,7 +120,6 @@ class Table extends Component {
     });
   };
 
-  render() {
     let studentData = this.state.studentData;
     return (
       <div class="col-md-7 offset-md-3 mt-5">
@@ -177,6 +170,5 @@ class Table extends Component {
         </table>
       </div>
     );
-  }
 }
 export default Table;
