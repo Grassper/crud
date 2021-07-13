@@ -12,41 +12,59 @@ class Popup extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { editStudent } = this.props;
+  static getDerivedStateFromProps(props, prevstate) {
+    let editStudent = props.editStudent;
     if (editStudent) {
-      this.setName(editStudent.name);
-      this.setDepartment(editStudent.department);
-      this.setPhoneNumber(editStudent.phoneNumber);
-      this.setMailId(editStudent.mailId);
+      editStudent = { ...props.editStudent };
+      delete editStudent.id;
+      if (
+        JSON.stringify({
+          name: "",
+          department: "",
+          phoneNumber: "",
+          mailId: "",
+        }) === JSON.stringify(prevstate)
+      ) {
+        return {
+          name: editStudent.name,
+          department: editStudent.department,
+          phoneNumber: editStudent.phoneNumber,
+          mailId: editStudent.mailId,
+        };
+      }
+      if (JSON.stringify(editStudent) !== JSON.stringify(prevstate)) {
+        return null;
+      }
     }
+    return null;
   }
 
   setName(value) {
-    this.setState({ ...this.state, name: value });
+    this.setState({ name: value });
   }
 
   setDepartment(value) {
-    this.setState({ ...this.state, department: value });
+    this.setState({ department: value });
   }
 
   setPhoneNumber(value) {
-    this.setState({ ...this.state, phoneNumber: value });
+    this.setState({ phoneNumber: value });
   }
 
   setMailId(value) {
-    this.setState({ ...this.state, mailId: value });
+    this.setState({ mailId: value });
   }
 
   handleClose = () => {
-    this.props.hide();
+    const { hide, clearEdit } = this.props;
+    hide();
     this.setState({
       name: "",
       department: "",
       phoneNumber: "",
       mailId: "",
     });
-    this.props.clearEdit();
+    clearEdit();
   };
 
   handleSubmit = () => {
@@ -124,6 +142,5 @@ class Popup extends React.Component {
     );
   }
 }
-
 
 export default Popup;

@@ -6,27 +6,24 @@ import { Button } from "react-bootstrap";
 import Popup from "./popUp";
 
 class TableContainer extends React.Component {
-
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       studentData: [],
       show: false,
       editStudent: null,
     };
   }
-  
+
   clearEdit = () => {
     this.setState({
-      ...this.state,
       editStudent: null,
     });
   };
 
   toggleShow = () => {
     this.setState({
-      ...this.state,
-      show: !this.state.show
+      show: !this.state.show,
     });
   };
 
@@ -34,7 +31,6 @@ class TableContainer extends React.Component {
     const student = this.state.studentData[index];
     student.id = index;
     this.setState({
-      ...this.state,
       editStudent: student,
     });
     this.toggleShow();
@@ -48,7 +44,6 @@ class TableContainer extends React.Component {
       mailId,
     };
     this.setState({
-      ...this.state,
       studentData: [...this.state.studentData, data],
     });
   };
@@ -57,7 +52,6 @@ class TableContainer extends React.Component {
     let studentData = this.state.studentData;
     studentData[id] = { name, department, phoneNumber, mailId };
     this.setState({
-      ...this.state,
       studentData: [...studentData],
     });
   };
@@ -75,13 +69,13 @@ class TableContainer extends React.Component {
       }
     }
     this.setState({
-      ...this.state,
       studentData: [...studentData],
     });
     return;
   };
 
   render() {
+    const { show, editStudent } = this.state;
     return (
       <div className="col-md-7 offset-md-3 mt-5">
         <div>
@@ -90,12 +84,12 @@ class TableContainer extends React.Component {
               Add User
             </Button>
             <Popup
-              form={this.state.show}
+              form={show}
               hide={this.toggleShow}
               add={this.handleAdd}
               edit={this.handleEdit}
               clearEdit={this.clearEdit}
-              editStudent={this.state.editStudent}
+              editStudent={editStudent}
             />
           </div>
         </div>
