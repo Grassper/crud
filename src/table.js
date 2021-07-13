@@ -1,46 +1,69 @@
 import "./App.css";
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
 
 import Popup from "./popUp";
 
-const TableContainer = () => {
-  const [studentData, setStudentData] = useState([]);
-  const [show, setShow] = useState(false);
-  const [editStudent, setEditStudent] = useState(null);
+class TableContainer extends React.Component {
 
-  const clearEdit = () => {
-    setEditStudent(null);
+  constructor(props) {
+    super(props);
+    this.state = {
+      studentData: [],
+      show: false,
+      editStudent: null,
+    };
+  }
+  
+  clearEdit = () => {
+    this.setState({
+      ...this.state,
+      editStudent: null,
+    });
   };
 
-  const toggleShow = () => {
-    setShow((prevState) => !prevState);
+  toggleShow = () => {
+    this.setState({
+      ...this.state,
+      show: !this.state.show
+    });
   };
 
-  const toggleEdit = (index) => {
-    const student = studentData[index];
+  toggleEdit = (index) => {
+    const student = this.state.studentData[index];
     student.id = index;
-    setEditStudent(student);
-    toggleShow();
+    this.setState({
+      ...this.state,
+      editStudent: student,
+    });
+    this.toggleShow();
   };
 
-  const handleAdd = (name, department, phoneNumber, mailId) => {
+  handleAdd = (name, department, phoneNumber, mailId) => {
     const data = {
       name,
       department,
       phoneNumber,
       mailId,
     };
-    setStudentData((prevState) => [...prevState, data]);
+    this.setState({
+      ...this.state,
+      studentData: [...this.state.studentData, data],
+    });
   };
 
-  const handleEdit = (id, name, department, phoneNumber, mailId) => {
+  handleEdit = (id, name, department, phoneNumber, mailId) => {
+    let studentData = this.state.studentData;
     studentData[id] = { name, department, phoneNumber, mailId };
-    setStudentData(studentData);
+    this.setState({
+      ...this.state,
+      studentData: [...studentData],
+    });
   };
 
-  const handleDelete = (index) => {
+  handleDelete = (index) => {
+    let studentData = this.state.studentData;
     const confirmBox = window.confirm("Do you really want to delete this?");
     if (confirmBox === true) {
       if (index === 0) {
@@ -51,65 +74,71 @@ const TableContainer = () => {
         studentData.splice(index, 1);
       }
     }
-    setStudentData([...studentData]);
+    this.setState({
+      ...this.state,
+      studentData: [...studentData],
+    });
     return;
   };
 
-  return (
-    <div className="col-md-7 offset-md-3 mt-5">
-      <div>
-        <div className="modalClass">
-          <Button onClick={toggleShow} className="text-right">
-            Add User
-          </Button>
-          <Popup
-            form={show}
-            hide={toggleShow}
-            add={handleAdd}
-            edit={handleEdit}
-            clearEdit={clearEdit}
-            editStudent={editStudent}
-          />
+  render() {
+    return (
+      <div className="col-md-7 offset-md-3 mt-5">
+        <div>
+          <div className="modalClass">
+            <Button onClick={this.toggleShow} className="text-right">
+              Add User
+            </Button>
+            <Popup
+              form={this.state.show}
+              hide={this.toggleShow}
+              add={this.handleAdd}
+              edit={this.handleEdit}
+              clearEdit={this.clearEdit}
+              editStudent={this.state.editStudent}
+            />
+          </div>
         </div>
-      </div>
-      <table className="table mt-3">
-        <thead>
-          <tr className="table-top th-color">
-            <th scope="col">Name</th>
-            <th scope="col">Department</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Mail-Id</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {studentData.map((data, i) => (
-            <tr key={i} className="table-top">
-              <td>{data.name}</td>
-              <td>{data.department}</td>
-              <td>{data.phoneNumber}</td>
-              <td>{data.mailId}</td>
-              <td>
-                <button
-                  className="btn btn-primary btn-sm"
-                  id="editbtn"
-                  onClick={() => toggleEdit(i)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-danger btn-sm"
-                  id="dltbtn"
-                  onClick={() => handleDelete(i)}
-                >
-                  Delete
-                </button>
-              </td>
+        <table className="table mt-3">
+          <thead>
+            <tr className="table-top th-color">
+              <th scope="col">Name</th>
+              <th scope="col">Department</th>
+              <th scope="col">Phone Number</th>
+              <th scope="col">Mail-Id</th>
+              <th scope="col">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+          </thead>
+          <tbody>
+            {this.state.studentData.map((data, i) => (
+              <tr key={i} className="table-top">
+                <td>{data.name}</td>
+                <td>{data.department}</td>
+                <td>{data.phoneNumber}</td>
+                <td>{data.mailId}</td>
+                <td>
+                  <button
+                    className="btn btn-primary btn-sm"
+                    id="editbtn"
+                    onClick={() => this.toggleEdit(i)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    id="dltbtn"
+                    onClick={() => this.handleDelete(i)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
+
 export default TableContainer;
