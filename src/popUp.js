@@ -10,6 +10,7 @@ class Popup extends React.Component {
       phoneNumber: "",
       mailId: "",
     };
+    this.formValid = React.createRef();
   }
 
   static getDerivedStateFromProps(props, prevstate) {
@@ -68,6 +69,13 @@ class Popup extends React.Component {
   };
 
   handleSubmit = () => {
+    // checking form validity
+    const isValid = this.formValid.current.checkValidity();
+    if (!isValid) {
+      return;
+    }
+
+    // submitting form
     const { name, department, phoneNumber, mailId } = this.state;
     if (!this.props.editStudent) {
       this.props.add(name, department, phoneNumber, mailId);
@@ -90,7 +98,7 @@ class Popup extends React.Component {
       <div>
         <Modal show={form} onHide={this.handleClose}>
           <Modal.Body>
-            <form>
+            <form ref={this.formValid}>
               <label className="form-height">Name</label>
               <input
                 type="text"
@@ -98,7 +106,10 @@ class Popup extends React.Component {
                 className="form-control"
                 value={name}
                 onChange={(e) => this.setName(e.target.value)}
-                placeholder="Enter Your Name"
+                placeholder="Full Name"
+                required
+                minLength="3"
+                maxLength="100"
               />
               <label className="form-height">Department</label>
               <input
@@ -107,25 +118,31 @@ class Popup extends React.Component {
                 className="form-control"
                 value={department}
                 onChange={(e) => this.setDepartment(e.target.value)}
-                placeholder="Enter Your Department"
+                placeholder="Department Name"
+                required
+                minLength="3"
+                maxLength="100"
               />
               <label className="form-height">Phone Number</label>
               <input
-                type="text"
+                type="tel"
                 name="txtNum"
                 className="form-control"
                 value={phoneNumber}
                 onChange={(e) => this.setPhoneNumber(e.target.value)}
-                placeholder="Enter Your Phone Number"
+                placeholder="555-555-5555"
+                required
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               />
               <label className="form-height">Mail-Id</label>
               <input
-                type="text"
+                type="email"
                 name="txtMail"
                 className="form-control"
                 value={mailId}
                 onChange={(e) => this.setMailId(e.target.value)}
-                placeholder="Enter Your Mail-Id"
+                placeholder="email@address.com"
+                required
               />
             </form>
           </Modal.Body>
